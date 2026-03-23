@@ -7,7 +7,9 @@ Realistic DFIR investigation simulating a full domain compromise attack, includi
 - **Date:** March 20, 2026  
 - **Severity:** Critical  
 - **Status:** Active  
-- **Analyst:** Abdoulaye  
+- **Analyst:** Abdoulaye
+- **Environment:** Windows domain  
+- **Investigation Tool:** Microsoft Defender for Endpoint (MDE) using KQL queries
 
 ---
 
