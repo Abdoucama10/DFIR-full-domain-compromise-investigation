@@ -207,27 +207,6 @@ Data uploaded to MEGA using `rclone`
 
 ![Exfiltration](images/exfiltration.png)
 
----
-
-# ⏱️ Timeline
-
-| Time | Activity |
-|------|--------|
-| 09:22 | File downloaded |
-| 09:27 | Malware executed |
-| 09:37 | Persistence created |
-| 10:14 | Lateral movement |
-| 11:35 | Domain Controller compromised |
-
----
-
-# ❗ Root Causes
-
-- User clicked phishing email  
-- Weak administrator password  
-- No access restrictions  
-- Lack of endpoint protection  
-- Open internal network (SMB)  
 
 ---
 
