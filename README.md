@@ -141,19 +141,26 @@ This action allowed an attacker to:
 
 ---
 
-# ⚙️ Attack Flow (Simple)
+# ⚙️ Attack Flow 
 
 ## 1. Initial Access
 User downloaded a malicious ISO file from a phishing email.
 
-![Initial Access](images/initial-access.png)
+(images/initial-access.png) <img width="1602" height="487" alt="image" src="https://github.com/user-attachments/assets/ac1c6d5c-be75-4b63-a682-eda11751bb0b" />
+
+KQL Query 
+
 
 ---
 
 ## 2. Execution
 Malware executed using `rundll32.exe`.
 
-![Execution](images/execution.png)
+<img width="1516" height="453" alt="image" src="https://github.com/user-attachments/assets/e5f12ed2-9cba-486b-a64b-3333cbe6bb51" />
+
+<img width="1516" height="453" alt="image" src="https://github.com/user-attachments/assets/6b91f050-b608-430b-b63c-1fcbe5f45c4e" />
+
+
 
 ---
 
@@ -161,7 +168,17 @@ Malware executed using `rundll32.exe`.
 - Scheduled task created (`WindowsUpdate`)
 - AnyDesk installed
 
-![Persistence](images/persistence.png)
+<img width="1640" height="347" alt="image" src="https://github.com/user-attachments/assets/e6f2f7df-f4a9-496d-937c-06bfbdcfa5d7" />
+
+<img width="1643" height="314" alt="image" src="https://github.com/user-attachments/assets/083da342-a956-48f2-a34b-d18914259bb7" />
+
+<img width="1658" height="251" alt="image" src="https://github.com/user-attachments/assets/27f1d094-d7dc-45cb-92ca-9948a2d22060" />
+
+<img width="1658" height="251" alt="image" src="https://github.com/user-attachments/assets/50b90902-3bec-4f49-b04a-bb7658619b32" />
+
+
+
+
 
 ---
 
@@ -217,6 +234,31 @@ Data uploaded to MEGA using `rclone`
 - Sensitive data stolen  
 - Persistent attacker access  
 - Multiple systems infected  
+
+---
+
+# 🧩 MITRE ATT&CK Mapping
+
+| Tactic | Technique | ID | Description |
+|--------|----------|----|------------|
+| Initial Access | Phishing Attachment | T1566.001 | User opened malicious ISO file |
+| Execution | User Execution | T1204.002 | User launched infected file |
+| Execution | Command Execution | T1059 | rundll32 used to run DLL |
+| Defense Evasion | Obfuscated Files | T1027 | Malware hidden in ISO |
+| Defense Evasion | Signed Binary Proxy | T1218.011 | rundll32 abused |
+| Persistence | Scheduled Task | T1053.005 | WindowsUpdate task created |
+| Persistence | Remote Access Software | T1219 | AnyDesk installed |
+| Privilege Escalation | UAC Bypass | T1548.002 | fodhelper.exe used |
+| Privilege Escalation | Exploit for Privilege | T1068 | Print Spooler abuse |
+| Credential Access | LSASS Dumping | T1003.001 | Passwords extracted from memory |
+| Credential Access | NTDS Dumping | T1003.003 | Domain database stolen |
+| Discovery | System Discovery | T1082 | System info collected |
+| Discovery | Account Discovery | T1033 | User enumeration |
+| Lateral Movement | SMB / Admin Shares | T1021.002 | Movement across systems |
+| Collection | Data Staging | T1560 | Files prepared |
+| Command & Control | Web Protocols | T1071.001 | C2 communication over HTTPS |
+| Exfiltration | Cloud Storage | T1567.002 | Data sent to MEGA |
+| Defense Evasion | Log Clearing | T1070 | Evidence removed |
 
 ---
 
