@@ -148,19 +148,23 @@ This action allowed an attacker to:
 ## 1. Initial Access
 User downloaded a malicious ISO file from a phishing email.
 
-(images/initial-access.png) <img width="1602" height="487" alt="image" src="https://github.com/user-attachments/assets/ac1c6d5c-be75-4b63-a682-eda11751bb0b" />
+<img width="1602" height="487" alt="image" src="https://github.com/user-attachments/assets/ac1c6d5c-be75-4b63-a682-eda11751bb0b" />
 
-KQL Query 
+The ZIP file was extracted and likely double-clicked, allowing the attacker to gain access.
+
+<img width="1641" height="452" alt="image" src="https://github.com/user-attachments/assets/a28ed1d0-16dc-42ce-b9f7-df19d5fceeff" />
+
+This query was used to identify files downloaded from web browsers on the compromised device.
+
 
 
 ---
 
 ## 2. Execution
-Malware executed using `rundll32.exe`.
+The malicious file executed: D:\review.dll,StartW`
+This loaded the Sliver DLL beacon into memory and connected to the attacker C2 at `cdn.cloud-endpoint.net`.
 
-<img width="1516" height="453" alt="image" src="https://github.com/user-attachments/assets/e5f12ed2-9cba-486b-a64b-3333cbe6bb51" />
-
-<img width="1516" height="453" alt="image" src="https://github.com/user-attachments/assets/6b91f050-b608-430b-b63c-1fcbe5f45c4e" />
+<img width="1516" height="453" alt="image" src="https://github.com/user-attachments/assets/6c4baece-f5e4-420a-a7d7-ff2801739175" />
 
 
 
@@ -169,34 +173,69 @@ Malware executed using `rundll32.exe`.
 ## 3. Persistence
 - Scheduled task created (`WindowsUpdate`)
 - AnyDesk installed
+The attacker created a scheduled task named **WindowsUpdate**, pointing to `update.exe` for long-term access.
 
-<img width="1640" height="347" alt="image" src="https://github.com/user-attachments/assets/e6f2f7df-f4a9-496d-937c-06bfbdcfa5d7" />
+<img width="1640" height="347" alt="image" src="https://github.com/user-attachments/assets/4764d005-86dd-4d73-9f37-9fc3a10faaa8" />
 
-<img width="1643" height="314" alt="image" src="https://github.com/user-attachments/assets/083da342-a956-48f2-a34b-d18914259bb7" />
+<img width="1643" height="314" alt="image" src="https://github.com/user-attachments/assets/d8c1f08e-2832-4bcc-a8a4-4d2071742403" />
 
-<img width="1658" height="251" alt="image" src="https://github.com/user-attachments/assets/27f1d094-d7dc-45cb-92ca-9948a2d22060" />
+A backup domain account was created on the Domain Controller for fallback access.
 
-<img width="1658" height="251" alt="image" src="https://github.com/user-attachments/assets/50b90902-3bec-4f49-b04a-bb7658619b32" />
+<img width="1658" height="251" alt="image" src="https://github.com/user-attachments/assets/2939c749-8bc1-42ff-b672-211c2b20e966" />
 
+AnyDesk was installed and configured for unattended remote access.
 
-
+<img width="1319" height="244" alt="image" src="https://github.com/user-attachments/assets/c24be689-7325-4a79-9d8f-889af11a3f04" />
 
 
 ---
 
 ## 4. Privilege Escalation
-- UAC bypass
-- SYSTEM access gained
+The attacker:
 
-![Privilege Escalation](images/privilege-escalation.png)
+- Bypassed UAC using `fodhelper.exe`  
+- Escalated to SYSTEM privileges via Print Spooler  
+- Dumped LSASS memory to steal Domain Admin credentials  
+- Added `svc_backup` to the Admin group
+
+<img width="1666" height="541" alt="image" src="https://github.com/user-attachments/assets/a8fadc55-9517-448a-b69b-7a9712f73a86" />
+
+<img width="1645" height="211" alt="image" src="https://github.com/user-attachments/assets/4820a2b1-202d-46be-8dfb-3576a9bf0cbe" />
+
+---
+## 5. Defense Evasion
+
+The attacker:
+
+- Used legitimate Windows tools (LOLBins)  
+- Cleared logs and temporary files  
+- Executed malicious DLLs in memory  
+- Maintained persistence with scheduled tasks and AnyDesk
+
+<img width="1516" height="453" alt="image" src="https://github.com/user-attachments/assets/16784f8c-4f13-4940-97d0-26fea543a8fc" />
+
+<img width="1641" height="452" alt="image" src="https://github.com/user-attachments/assets/44260147-9bd7-499c-ac58-09c50a40d5fb" />
+
+<img width="1642" height="258" alt="image" src="https://github.com/user-attachments/assets/1e1345e0-da04-4da7-8298-3c9db361e93c" />
+
+<img width="1630" height="208" alt="image" src="https://github.com/user-attachments/assets/6abe4f3a-e5ff-4ebb-82e8-af498bd1796b" />
 
 ---
 
-## 5. Credential Access
-- Passwords dumped from LSASS
-- Domain Admin credentials stolen
+## 6. Credential Access
+The attacker:
 
-![Credential Access](images/credential-access.png)
+- Used legitimate Windows tools (LOLBins)  
+- Cleared logs and temporary files  
+- Executed malicious DLLs in memory  
+- Maintained persistence with scheduled tasks and AnyDesk
+
+<img width="1688" height="346" alt="image" src="https://github.com/user-attachments/assets/973c3f0e-d673-4163-8b2b-ea13d8031492" />
+
+<img width="1636" height="331" alt="image" src="https://github.com/user-attachments/assets/077fe933-5141-4646-84cd-4b7831581abe" />
+
+
+
 
 ---
 
