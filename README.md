@@ -149,24 +149,49 @@ This action allowed an attacker to:
 User downloaded a malicious ISO file from a phishing email.
 
 <img width="1602" height="487" alt="image" src="https://github.com/user-attachments/assets/ac1c6d5c-be75-4b63-a682-eda11751bb0b" />
+ 
 
 The ZIP file was extracted and likely double-clicked, allowing the attacker to gain access.
+
 
 <img width="1641" height="452" alt="image" src="https://github.com/user-attachments/assets/a28ed1d0-16dc-42ce-b9f7-df19d5fceeff" />
 
 This query was used to identify files downloaded from web browsers on the compromised device.
+
+**KQL Query (MDE):**
+```kql
+MYDFIR_DeviceFileEvents_CL
+| where Timestamp between (datetime(2026-01-29) .. datetime(2026-02-02))
+| where Lab == "emberforge"
+| where DeviceName contains "EC2AMAZ-B9GHHO6"
+| where InitiatingProcessFileName in ("msedge", "firefox", "chrome")
+| project Timestamp, ActionType, DeviceName, InitiatingProcessFileName, FileName, SHA256
+| order by Timestamp asc
+```
 
 
 
 ---
 
 ## 2. Execution
-The malicious file executed: D:\review.dll,StartW`
+The malicious file executed: `D:\review.dll,StartW`
 This loaded the Sliver DLL beacon into memory and connected to the attacker C2 at `cdn.cloud-endpoint.net`.
 
 <img width="1516" height="453" alt="image" src="https://github.com/user-attachments/assets/6c4baece-f5e4-420a-a7d7-ff2801739175" />
 
+This query shows process activity on the compromised device. It helps identify malicious commands and unusual behavior.
 
+**KQL Query (MDE):**
+```kql
+MYDFIR_DeviceProcessEvents_CL
+| where Timestamp between (datetime(2026-01-29) .. datetime(2026-02-02))
+| where Lab == "emberforge"
+| where DeviceName contains "EC2AMAZ-B9GHHO6"
+| where ProcessCommandLine !contains "splunk"
+| where ProcessCommandLine !contains "type=utility --utility"
+| project Timestamp, DeviceName, AccountName, InitiatingProcessFileName, InitiatingProcessCommandLine, ProcessCommandLine
+| order by Timestamp asc
+```
 
 ---
 
@@ -185,6 +210,7 @@ A backup domain account was created on the Domain Controller for fallback access
 AnyDesk was installed and configured for unattended remote access.
 
 <img width="1319" height="244" alt="image" src="https://github.com/user-attachments/assets/c24be689-7325-4a79-9d8f-889af11a3f04" />
+
 
 
 ---
@@ -234,6 +260,17 @@ The attacker:
 <img width="1636" height="331" alt="image" src="https://github.com/user-attachments/assets/077fe933-5141-4646-84cd-4b7831581abe" />
 
 
+This query tracks activity related to the file **update.exe**, which was used as a malicious payload.
+
+**KQL Query (MDE):**
+```kql
+MYDFIR_DeviceFileEvents_CL
+| where Timestamp between (datetime(2026-01-29) .. datetime(2026-02-02))
+| where Lab == "emberforge"
+| where InitiatingProcessFileName contains "update.exe"
+| project Timestamp, DeviceName, InitiatingProcessFileName, FileName, FolderPath
+| order by Timestamp asc
+```
 
 
 ---
@@ -247,6 +284,19 @@ Attacker ran commands to map the network and find accounts:
 
 <img width="1356" height="204" alt="image" src="https://github.com/user-attachments/assets/4f6b9273-a71f-4647-a94c-87332b45cf2f" />
 
+**KQL Query (MDE):**
+```kql
+MYDFIR_DeviceProcessEvents_CL
+| where Timestamp between (datetime(2026-01-29) .. datetime(2026-02-02))
+| where Lab == "emberforge"
+| where ProcessCommandLine has_any (
+    "whoami","ipconfig","net user","net","net group",
+    "net localgroup","nltest","systeminfo","tasklist",
+    "quser","qwinsta","hostname","arp -a","route print"
+)
+| project Timestamp, DeviceName, AccountName, ProcessCommandLine
+| order by Timestamp asc
+```
 ---
 
 ## 8. Lateral Movement
