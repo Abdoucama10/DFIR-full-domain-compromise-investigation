@@ -171,8 +171,7 @@ This loaded the Sliver DLL beacon into memory and connected to the attacker C2 a
 ---
 
 ## 3. Persistence
-- Scheduled task created (`WindowsUpdate`)
-- AnyDesk installed
+
 The attacker created a scheduled task named **WindowsUpdate**, pointing to `update.exe` for long-term access.
 
 <img width="1640" height="347" alt="image" src="https://github.com/user-attachments/assets/4764d005-86dd-4d73-9f37-9fc3a10faaa8" />
@@ -239,31 +238,51 @@ The attacker:
 
 ---
 
-## 6. Lateral Movement
-- Moved across systems using SMB
+## 7. Discovery
+Attacker ran commands to map the network and find accounts:
 
-![Lateral Movement](images/lateral-movement.png)
+<img width="1590" height="407" alt="image" src="https://github.com/user-attachments/assets/a56a2945-7c06-40b3-8304-b3937f9a1aa8" />
 
----
+<img width="1371" height="403" alt="image" src="https://github.com/user-attachments/assets/77316d09-1cec-41e9-93a4-207e01537d67" />
 
-## 7. Data Collection
-Sensitive files gathered and prepared
-
-![Collection](images/collection.png)
+<img width="1356" height="204" alt="image" src="https://github.com/user-attachments/assets/4f6b9273-a71f-4647-a94c-87332b45cf2f" />
 
 ---
 
-## 8. Command & Control
-Connection established to attacker server
+## 8. Lateral Movement
 
-![C2](images/c2.png)
+Used stolen Domain Admin credentials to access other systems via SMB and admin shares.
+
+<img width="1646" height="246" alt="image" src="https://github.com/user-attachments/assets/6290ffe5-5fd8-4cd1-a5b2-dd5371bb060d" />
+
+<img width="985" height="244" alt="image" src="https://github.com/user-attachments/assets/c5be8b0e-157d-4fa2-a5d6-8cf20fe98d41" />
+
+
 
 ---
 
-## 9. Data Exfiltration
-Data uploaded to MEGA using `rclone`
+## 9. Data Collection
 
-![Exfiltration](images/exfiltration.png)
+Sensitive files staged for exfiltration.
+
+<img width="1609" height="204" alt="image" src="https://github.com/user-attachments/assets/a957e393-2223-4b2e-9f5f-ccec8dcfe300" />
+
+
+---
+
+## 10. Command & Control
+Sliver DLL maintained a persistent connection to the C2 server.
+
+<img width="1175" height="429" alt="image" src="https://github.com/user-attachments/assets/2e02eede-f957-486d-afd1-80e7f23eb0a7" />
+
+
+---
+
+## 11. Data Exfiltration
+Files compressed and sent to MEGA.
+
+<img width="1586" height="283" alt="image" src="https://github.com/user-attachments/assets/38f01f35-9bbb-4c4e-a0ad-76e1fd7af566" />
+
 
 
 ---
