@@ -1,5 +1,5 @@
 # MYDFIR-full-domain-compromise-investigation
-Realistic DFIR investigation simulating a full domain compromise attack, including phishing, lateral movement, credential dumping, and data exfiltration.
+Realistic DFIR investigation simulating a full domain compromise attack, including phishing, lateral movement, credential dumping, and data exfiltration. Conducted in a simulated SOC environment by MYDFIR using real telemetry and analyst workflows
 # 🔴 Full Domain Compromise Incident Report
 
 ## 📌 Overview
